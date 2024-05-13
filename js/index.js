@@ -224,7 +224,6 @@ class User {
 }
 
 class IdentityRequest {
-
   setEmail (email) {
     this[UserIdentityType.Email] = email
     return this
@@ -246,13 +245,12 @@ class IdentityRequest {
 }
 
 class Identity {
-
   static getCurrentUser (completion) {
     NativeModules.MParticle.getCurrentUserWithCompletion((error, userId) => {
       if (error) {
         console.log(error.stack)
       }
-      var currentUser = new User(userId)
+      const currentUser = new User(userId)
       completion(currentUser)
     })
   }
@@ -262,7 +260,7 @@ class Identity {
       if (error == null || error === undefined) {
         completion(error, userId, previousUserId)
       } else {
-        var parsedError = new MParticleError(error)
+        const parsedError = new MParticleError(error)
         completion(parsedError, userId, previousUserId)
       }
     })
@@ -273,7 +271,7 @@ class Identity {
       if (error == null || error === undefined) {
         completion(error, userId, previousUserId)
       } else {
-        var parsedError = new MParticleError(error)
+        const parsedError = new MParticleError(error)
         completion(parsedError, userId, previousUserId)
       }
     })
@@ -284,7 +282,7 @@ class Identity {
       if (error == null || error === undefined) {
         completion(error, userId, previousUserId)
       } else {
-        var parsedError = new MParticleError(error)
+        const parsedError = new MParticleError(error)
         completion(parsedError, userId, previousUserId)
       }
     })
@@ -295,7 +293,7 @@ class Identity {
       if (error == null || error === undefined) {
         completion(error, userId, previousUserId)
       } else {
-        var parsedError = new MParticleError(error)
+        const parsedError = new MParticleError(error)
         completion(parsedError, userId, previousUserId)
       }
     })
@@ -304,7 +302,6 @@ class Identity {
   static aliasUsers (AliasRequest, completion) {
     NativeModules.MParticle.aliasUsers(AliasRequest, completion)
   }
-
 }
 
 // ******** Commerce ********
@@ -326,7 +323,6 @@ class Promotion {
 }
 
 class AliasRequest {
-
   sourceMpid (mpid) {
     this.sourceMpid = mpid
     return this
@@ -419,7 +415,6 @@ class Product {
 }
 
 class GDPRConsent {
-
   constructor (consented, doc, timestamp, location, hardwareId) {
     this.consented = consented
     this.document = doc
@@ -455,7 +450,6 @@ class GDPRConsent {
 }
 
 class CCPAConsent {
-
   constructor (consented, doc, timestamp, location, hardwareId) {
     this.consented = consented
     this.document = doc
@@ -491,23 +485,22 @@ class CCPAConsent {
 }
 
 class CommerceEvent {
-
   static createProductActionEvent (productActionType, products, transactionAttributes = {}) {
     return new CommerceEvent()
-                    .setProductActionType(productActionType)
-                    .setProducts(products)
-                    .setTransactionAttributes(transactionAttributes)
+      .setProductActionType(productActionType)
+      .setProducts(products)
+      .setTransactionAttributes(transactionAttributes)
   }
 
   static createPromotionEvent (promotionActionType, promotions) {
     return new CommerceEvent()
-                    .setPromotionActionType(promotionActionType)
-                    .setPromotions(promotions)
+      .setPromotionActionType(promotionActionType)
+      .setPromotions(promotions)
   }
 
   static createImpressionEvent (impressions) {
     return new CommerceEvent()
-                    .setImpressions(impressions)
+      .setImpressions(impressions)
   }
 
   setTransactionAttributes (transactionAttributes) {
@@ -587,7 +580,6 @@ class CommerceEvent {
 }
 
 class Event {
-
   setCategory (category) {
     this.category = category
     return this
@@ -652,14 +644,14 @@ class MParticleError {
 
 const MParticle = {
 
-  EventType,            // Constants
+  EventType, // Constants
   UserIdentityType,
   UserAttributeType,
   ProductActionType,
   PromotionActionType,
   ATTAuthStatus,
 
-  Product,              // Classes
+  Product, // Classes
   Impression,
   Promotion,
   CommerceEvent,
@@ -673,7 +665,7 @@ const MParticle = {
   GDPRConsent,
   CCPAConsent,
 
-  upload,             // Methods
+  upload, // Methods
   setUploadInterval,
   logEvent,
   logMPEvent,

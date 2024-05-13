@@ -1,0 +1,108 @@
+version: 2.1
+
+parameters:
+  schedule:
+    type: boolean
+    default: false
+
+executors:
+  macos_executor:
+    macos:
+      xcode: '14.3.1'
+    resource_class: macos.m1.medium.gen1
+
+commands:
+  install_dependencies:
+    description: 'Install dependencies and cache node_modules'
+    steps:
+      - run:
+          name: Generate .npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install NPM Dependencies
+          command: |
+            if [ ! -d "node_modules" ]; then
+              npm ci
+            fi
+      - save_cache:
+          key: v1-node-modules-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules
+
+jobs:
+  run_unit_tests:
+    executor: macos_executor
+    steps:
+      - checkout
+      - install_dependencies
+      - run:
+          name: 'Run tests'
+          command: npm run test
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules
+
+  run_standard_fix:
+    executor: macos_executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: 'Run Standard fix'
+          command: npm run fix
+
+  deploy_npm_package:
+    executor: macos_executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Generate .npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
+          name: 'Install semantic-release'
+          command: npm install --save-dev @semantic-release/git semantic-release
+      - run:
+          name: 'Run semantic-release'
+          command: nvm install 'lts/*' && npx semantic-release
+      - run:
+          name: 'Publish to NPM'
+          command: npm publish
+
+workflows:
+  deploy_dev:
+    jobs:
+      - run_unit_tests:
+          filters:
+            branches:
+              only: main
+      - run_standard_fix:
+          requires:
+            - run_unit_tests
+          filters:
+            branches:
+              only: main
+      - deploy_npm_package:
+          requires:
+            - run_standard_fix
+          context:
+            - ordering_web_app_deploy_dev
+          filters:
+            branches:
+              only: main
+  check_pr:
+    jobs:
+      - run_unit_tests
+      - run_standard_fix:
+          requires:
+            - run_unit_tests
