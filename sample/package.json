@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "react": "*",
+    "react": "18.3.1",
     "react-native": "^0.53.3",
     "react-native-mparticle": "2.5.0"
   },
