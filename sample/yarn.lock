@@ -3913,9 +3913,10 @@ react-is@^16.8.1, react-is@^16.8.6:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
 
-react-native-mparticle@2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-mparticle/-/react-native-mparticle-2.5.0.tgz#b4b78ab4355ac23f6ec3401025ba061a19e11822"
+react-native-mparticle@2.7.11:
+  version "2.7.11"
+  resolved "https://registry.yarnpkg.com/react-native-mparticle/-/react-native-mparticle-2.7.11.tgz#2964f6f21c007920b302dc5b644118ca447c32ba"
+  integrity sha512-2YnwaaUVcdoDnuSZv+VM0NmQ/QbITz4D9eKDucL7zU87t8wG02b+uDcAptusQsIVnuah45ZPNqZCI9lonffl/w==
 
 react-native@^0.53.3:
   version "0.53.3"
