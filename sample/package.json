@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "react": "*",
-    "react-native": "^0.53.3",
+    "react-native": "^0.69.12",
     "react-native-mparticle": "2.5.0"
   },
   "devDependencies": {
